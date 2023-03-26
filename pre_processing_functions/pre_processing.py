@@ -2,9 +2,6 @@
 import pandas as pd
 import numpy as np
 
-one_hr_file = "data/Hour_Data_Stream.csv"
-df = pd.read_csv(one_hr_file)
-print(df)
 def get_processed_data(file):
     """
     Returns the processed dataframe from the raw csv file inputted
@@ -14,7 +11,6 @@ def get_processed_data(file):
     df = pd.read_csv(file)
     df = df.dropna(axis=0)
     df = df.loc[~(df == 0).all(axis=1)]
-    # time_test = time_test[60350:]
     times = df['times']
     df = df.drop(columns=['times'])
 
@@ -37,7 +33,6 @@ def get_processed_data(file):
         freq_inter = freq_inter.append(df_maker(a, 'freq'))
 
     prcoessed_df = pd.concat([inter, freq_inter], axis=1)
-    prcoessed_df = prcoessed_df.drop(columns=['index'])
 
     return prcoessed_df
 
@@ -48,12 +43,12 @@ def df_maker(testdf, type_domain):
     Jerk = pd.DataFrame()
 
     # group all rows by label of activity
-    test = testdf.groupby(['label'])
+    test = testdf.copy()
 
     # add min and max values
-    tester = test.mean()
-    maxx = testdf.groupby(['label']).max()
-    minn = testdf.groupby(['label']).min()
+    tester = testdf.copy()
+    maxx = testdf.copy()
+    minn = testdf.copy()
 
     # Renaming
     if type_domain == 'freq':
@@ -114,11 +109,11 @@ def df_maker(testdf, type_domain):
     maxes = maxes.append(maxx)
     Jerk = Jerk.append(avg_jerkk)
 
-    # Moving labels from index to a column
-    means = means.reset_index(drop=False)
-    maxes = maxes.reset_index(drop=False)
-    mins = mins.reset_index(drop=False)
-    Jerk = Jerk.reset_index(drop=False)
+    # # Moving labels from index to a column
+    # means = means.reset_index(drop=False)
+    # maxes = maxes.reset_index(drop=False)
+    # mins = mins.reset_index(drop=False)
+    # Jerk = Jerk.reset_index(drop=False)
 
     master = pd.concat([means, maxes, mins, Jerk], axis=1)
     return master
