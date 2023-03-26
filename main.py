@@ -15,4 +15,4 @@ input_file = "data/Hour_Data_Stream.csv"
 
 
 # Train and Predict
-fall_vs_no_fall, types_of_activities = predictions.train_and_predict(training_data, input_file)
+fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.train_and_predict(training_data, input_file)
