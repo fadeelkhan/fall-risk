@@ -14,3 +14,7 @@ def train_and_predict(training_data, x_test_data):
     multiclass_predictions = multiclass_model.predict(processed_df)
 
     return binary_predictions, multiclass_predictions
+
+def get_times(data_file):
+    df = pd.read_csv(data_file)
+    return df['times']
