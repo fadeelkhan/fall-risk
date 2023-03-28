@@ -25,4 +25,5 @@ input_file = "data/Hour_Data_Stream.csv"
 fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.train_and_predict(training_data, input_file)
 times = predictions.get_times(input_file)
 
+# Make visualizations and GUI
 visuals.plot_falls_and_activities(times, fall_vs_no_fall_predictions)
