@@ -16,14 +16,13 @@ warnings.filterwarnings("ignore")
 
 
 ## TRAINING AND PREDICTION
-# To re-train data on pre-processed training data
+# # To re-train data on pre-processed training data
 # training_data = 'data/master_dataset.csv'
 # save_new_trained_models(training_data)
 
 input_file = "data/Hour_Data_Stream.csv"
 
-
-# Train and Predict
+# # Train and Predict
 fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
 times = predictions.get_times(input_file)
 
