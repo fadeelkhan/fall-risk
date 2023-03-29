@@ -1,16 +1,21 @@
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-import sklearn
-import sklearn.metrics as metrics
-from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
-import numpy as np
 import pandas as pd
+import joblib
 
-def get_trained_models(master_dataset):
+def get_models():
+    binary_model = joblib.load('binary_model.pkl')
+    multiclass_model = joblib.load('multiclass_model.pkl')
+    return binary_model, multiclass_model
+
+def save_new_trained_models(training_data):
+    binary_model, multiclass_model = train_new_models(training_data)
+    joblib.dump(binary_model, 'binary_model.pkl')
+    joblib.dump(multiclass_model, 'multiclass_model.pkl')
+
+def train_new_models(master_dataset):
     # Load pre-processed data
     master = pd.read_csv(master_dataset)
     master = master.drop(columns=['Unnamed: 0'])
@@ -48,3 +53,5 @@ def get_trained_models(master_dataset):
     multiclass_model.fit(X_train, y_train)
 
     return binary_model, multiclass_model
+
+

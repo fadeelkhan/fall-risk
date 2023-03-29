@@ -8,7 +8,6 @@ def create_master_dataframe(location):
     # use glob to get all the csv files
     # in the folder
     path = os.getcwd()
-    csv_files = glob.glob(os.path.join(path, "*.csv"))
     standinglist = (os.listdir(location))
 
     # create list of all activity titles
