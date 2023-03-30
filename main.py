@@ -20,13 +20,14 @@ warnings.filterwarnings("ignore")
 # training_data = 'data/master_dataset.csv'
 # save_new_trained_models(training_data)
 
-input_file = "data/full_Hour_Data_Stream.csv"
-location_file = 'UWB_mappingtest1.xlsx'
+input_file = "data/Hour_Data_Stream.csv"
+location_file = 'visualization/UWB_mappingtest1.xlsx'
+mapped_location = 'visualization/Breakroom.csv'
 
 # # # Train and Predict
 fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
 times = predictions.get_times(input_file)
 
 # # Make visualizations and GUI
-visuals.GUI(fall_vs_no_fall_predictions)
-visuals.location(location_file)
+visuals.GUI(times, fall_vs_no_fall_predictions, location_file, mapped_location)
+
