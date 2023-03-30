@@ -13,6 +13,7 @@ def get_processed_data(file):
     df = df.loc[~(df == 0).all(axis=1)]
     times = df['times']
     df = df.drop(columns=['times'])
+    df = df.dropna()
 
     # create list of all activity titles
     master = pd.DataFrame()
