@@ -6,8 +6,8 @@ import matplotlib
 from random import randint
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, FigureCanvasAgg
 from matplotlib.figure import Figure
-from location.mapping import preprocess_mapping
-from location.mapping import mapping
+from mapping import preprocess_mapping
+from mapping import create_heatmap
 
 def GUI(fall_vs_no_fall_predictions):
     NUM_DATAPOINTS = len(fall_vs_no_fall_predictions)
@@ -57,7 +57,7 @@ def GUI(fall_vs_no_fall_predictions):
 
 def location(location_file):
     df = preprocess_mapping(location_file)
-    mapping(df)
+    create_heatmap(df)
 
 def draw_figure(canvas, figure):
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)

@@ -12,7 +12,7 @@ def preprocess_mapping(data_file):
     df = df.iloc[:, :2]
     df.columns = ['x', 'y']
     return df
-def mapping(df):
+def create_heatmap(df):
     df['x1'] = df['x']+0.5
     df['y1'] = df['y']-0.5
     q1 = df["x"].quantile(0.95)
