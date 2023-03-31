@@ -68,7 +68,7 @@ def df_maker(testdf, type_domain):
 
         # Jerk
         dt = 150E-3  # 150ms
-        avg_jerkk = tester / dt
+        avg_jerkk = int(tester) / dt
         avg_jerkk = avg_jerkk.rename(
             columns={"F_acc_x": "jerk_Facc_x", "F_acc_y": "jerk_Facc_y", "F_acc_z": "jerk_Facc_z",
                      "F_gyro_x": "jerk_Fgyro_x", "F_gyro_y": "jerk_Fgyro_y", "F_gyro_z": "jerk_Fgyro_z",
@@ -92,7 +92,7 @@ def df_maker(testdf, type_domain):
 
         # Jerk
         dt = 150  # 150ms
-        avg_jerkk = tester / dt
+        avg_jerkk = int(tester) / dt
         avg_jerkk = avg_jerkk.rename(
             columns={"acc_x": "jerk_acc_x", "acc_y": "jerk_acc_y", "acc_z": "jerk_acc_z", "gyro_x": "jerk_gyro_x",
                      "gyro_y": "jerk_gyro_y", "gyro_z": "jerk_gyro_z", "azimuth": "jerk_azimuth", "pitch": "jerk_pitch",
