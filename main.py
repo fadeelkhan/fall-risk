@@ -68,7 +68,7 @@ def create_window():
     return sg.Window(
         'Physician Interface',
         layout,
-        size=(1000, 700),
+        size=(1550, 800),
         no_titlebar=True,
         element_justification='center')
 
@@ -103,10 +103,9 @@ while True:
     if active:
         if serialInst.in_waiting:
             packet = serialInst.readline()
-            input_file = packet.decode('utf').rstrip('\n')
+            input_file = packet.decode('utf', errors='ignore').rstrip('\n')
             if bool(re.search(r'\d', input_file)):
-                # input_file = "data/Hour_Data_Stream.csv"
-                # # # Train and Predict
+                ### Predict Real Time
                 fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
                 window['-TIME-'].update(types_of_activities_predictions[0])
 
