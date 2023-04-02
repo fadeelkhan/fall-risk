@@ -4,7 +4,9 @@ from visualization import visuals
 import warnings
 import PySimpleGUI as sg
 from visualization.streaming import stream
-
+import serial.tools.list_ports
+import regex as re
+from prediction_functions import predictions
 
 warnings.filterwarnings("ignore")
 
@@ -34,22 +36,39 @@ warnings.filterwarnings("ignore")
 # visuals.GUI(times, fall_vs_no_fall_predictions, location_file, mapped_location)
 
 
+ports = serial.tools.list_ports.comports()
+serialInst = serial.Serial()
+
+portsList = []
+
+for onePort in ports:
+    portsList.append(str(onePort))
+
+val = 3
+
+for x in range(0, len(portsList)):
+    if portsList[x].startswith("COM" + str(val)):
+        portVar = "COM" + str(val)
+
+serialInst.baudrate = 9600
+serialInst.port = portVar
+serialInst.open()
+
+
 def create_window():
     sg.theme('black')
     layout = [
         [sg.Push(), sg.Image('cross.png', pad=0, enable_events=True, key='-CLOSE-')],
         [sg.VPush()],
         [sg.Text('', font='Young 50', key='-TIME-')],
-        [
-            sg.Button('Start', button_color=('#FFFFFF', '#FF0000'), border_width=0, key='-STARTSTOP-'),
-        ],
+        [sg.Button('Start', button_color=('#FFFFFF', '#FF0000'), border_width=0, key='-STARTSTOP-')],
         [sg.VPush()]
     ]
 
     return sg.Window(
         'Physician Interface',
         layout,
-        size=(600, 600),
+        size=(1000, 700),
         no_titlebar=True,
         element_justification='center')
 
@@ -82,8 +101,14 @@ while True:
                 window['-STARTSTOP-'].update('Stop')
 
     if active:
-        activity_status = stream()
-        window['-TIME-'].update(activity_status[0])
+        if serialInst.in_waiting:
+            packet = serialInst.readline()
+            input_file = packet.decode('utf').rstrip('\n')
+            if bool(re.search(r'\d', input_file)):
+                # input_file = "data/Hour_Data_Stream.csv"
+                # # # Train and Predict
+                fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
+                window['-TIME-'].update(types_of_activities_predictions[0])
 
 
 window.close()

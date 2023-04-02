@@ -29,9 +29,8 @@ def stream():
             input_file = packet.decode('utf').rstrip('\n')
             if bool(re.search(r'\d', input_file)):
                 # input_file = "data/Hour_Data_Stream.csv"
-
                 # # # Train and Predict
-                fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file.rstrip())
+                fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
                 # times = predictions.get_times(input_file)
 
                 # # Make visualizations and GUI
