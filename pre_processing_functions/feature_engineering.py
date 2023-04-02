@@ -13,8 +13,7 @@ def process_list(lst):
     :return: numpy array with 78 synthesized features
     '''
     # Calculate Jerk
-    print(lst)
-    lst = np.array(list(map(float, lst.split(','))))
+    # lst = np.array(list(map(float, lst.split(','))))
     max = lst.copy()
     min = lst.copy()
     dt = 150E-3  # 150ms

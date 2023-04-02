@@ -2,6 +2,7 @@ import serial.tools.list_ports
 import regex as re
 from prediction_functions import predictions
 
+
 def stream():
     ports = serial.tools.list_ports.comports()
     serialInst = serial.Serial()

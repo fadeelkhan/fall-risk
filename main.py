@@ -7,6 +7,7 @@ from visualization.streaming import stream
 import serial.tools.list_ports
 import regex as re
 from prediction_functions import predictions
+import numpy as np
 
 warnings.filterwarnings("ignore")
 
@@ -68,7 +69,7 @@ def create_window():
     return sg.Window(
         'Physician Interface',
         layout,
-        size=(1550, 800),
+        size=(600, 600),
         no_titlebar=True,
         element_justification='center')
 
@@ -101,13 +102,27 @@ while True:
                 window['-STARTSTOP-'].update('Stop')
 
     if active:
-        if serialInst.in_waiting:
-            packet = serialInst.readline()
-            input_file = packet.decode('utf', errors='ignore').rstrip('\n')
-            if bool(re.search(r'\d', input_file)):
-                ### Predict Real Time
-                fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(input_file)
-                window['-TIME-'].update(types_of_activities_predictions[0])
+        for iterr in range(3):
+            if serialInst.in_waiting:
+                packet = serialInst.readlines()
+                print(packet)
+                # if bool(re.search(r'\d', packet.decode('utf', errors='ignore').rstrip('\n'))):
+                #     input_file = packet.decode('utf', errors='ignore').rstrip('\n')
+                #     input_file = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', input_file))))
+                #     new_packet = serialInst.readline()
+                #     new_lst = packet.decode('utf', errors='ignore').rstrip('\n')
+                #     new_lst = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', new_lst))))
+                #     input_file = (input_file + new_lst) / 2
+                #     print(iterr)
+        try:
+            ### Predict Real Time
+            fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(
+                input_file)
+            window['-TIME-'].update(types_of_activities_predictions[0])
+        except:
+            pass
+
+
 
 
 window.close()
