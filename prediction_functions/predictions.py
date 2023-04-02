@@ -4,6 +4,10 @@ Used to make predictions based on already-trained data
 import pandas as pd
 from pre_processing_functions.feature_engineering import get_processed_data
 from prediction_functions.training import get_models
+from pre_processing_functions.feature_engineering import process_list
+
+def real_time_predictions():
+    pass
 
 def predict_using_existing_models(data_file):
     binary_model, multiclass_model = get_models()
@@ -11,9 +15,10 @@ def predict_using_existing_models(data_file):
     return binary_predictions, multiclass_predictions
 
 def predict(binary_model, multiclass_model, data_file):
-    processed_df = get_processed_data(data_file)
-    binary_predictions = binary_model.predict(processed_df)
-    multiclass_predictions = multiclass_model.predict(processed_df)
+    # processed_df = get_processed_data(data_file)
+    processed_df = process_list(data_file)
+    binary_predictions = binary_model.predict(processed_df.reshape(1, -1))
+    multiclass_predictions = multiclass_model.predict(processed_df.reshape(1, -1))
 
     return binary_predictions, multiclass_predictions
 

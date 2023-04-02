@@ -2,6 +2,38 @@
 import pandas as pd
 import numpy as np
 
+
+def get_magnitude(a, b, c):
+    return np.array([np.sqrt(a ** 2 + b ** 2 + c ** 2)])
+
+def process_list(lst):
+    '''
+    Returns processed list with 78 synthesized features from a list with 9 features
+    :param lst: a list with 9 features (acceleration, gyroscope and orientation in x, y, z directions)
+    :return: numpy array with 78 synthesized features
+    '''
+    # Calculate Jerk
+    lst = np.array(list(map(float, lst.split(','))))
+    max = lst.copy()
+    min = lst.copy()
+    dt = 150E-3  # 150ms
+    avg_jerk = lst / dt
+    acc_jerk_mag = get_magnitude(avg_jerk[0], avg_jerk[1], avg_jerk[2])
+    gyro_jerk_mag = get_magnitude(avg_jerk[3], avg_jerk[4], avg_jerk[5])
+    orient_jerk_mag = get_magnitude(avg_jerk[6], avg_jerk[7], avg_jerk[8])
+
+    transformed_y = np.abs(np.fft.fft(lst))
+    fmax = transformed_y.copy()
+    fmin = transformed_y.copy()
+    favg_jerk = np.abs(np.fft.fft(avg_jerk))
+    f_acc_jerk_mag = get_magnitude(favg_jerk[0], favg_jerk[1], favg_jerk[2])
+    f_gyro_jerk_mag = get_magnitude(favg_jerk[3], favg_jerk[4], favg_jerk[5])
+    f_orient_jerk_mag = get_magnitude(favg_jerk[6], favg_jerk[7], favg_jerk[8])
+
+    processed = np.concatenate((lst, max, min, avg_jerk, acc_jerk_mag, gyro_jerk_mag, orient_jerk_mag, transformed_y,
+                                fmax, fmin, favg_jerk, f_acc_jerk_mag, f_gyro_jerk_mag, f_orient_jerk_mag))
+    return processed
+
 def get_processed_data(file):
     """
     Returns the processed dataframe from the raw csv file inputted
@@ -9,6 +41,7 @@ def get_processed_data(file):
     :return: processed data frame with 78 synthesized features
     """
     df = pd.read_csv(file)
+    df = pd.DataFrame(file, columns=['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z', 'azimuth', 'pitch', 'roll'])
     df = df.dropna(axis=0)
     df = df.loc[~(df == 0).all(axis=1)]
     times = df['times']
@@ -68,7 +101,7 @@ def df_maker(testdf, type_domain):
 
         # Jerk
         dt = 150E-3  # 150ms
-        avg_jerkk = int(tester) / dt
+        avg_jerkk = tester.astype(float) / dt
         avg_jerkk = avg_jerkk.rename(
             columns={"F_acc_x": "jerk_Facc_x", "F_acc_y": "jerk_Facc_y", "F_acc_z": "jerk_Facc_z",
                      "F_gyro_x": "jerk_Fgyro_x", "F_gyro_y": "jerk_Fgyro_y", "F_gyro_z": "jerk_Fgyro_z",
@@ -92,7 +125,7 @@ def df_maker(testdf, type_domain):
 
         # Jerk
         dt = 150  # 150ms
-        avg_jerkk = int(tester) / dt
+        avg_jerkk = tester.astype(float) / dt
         avg_jerkk = avg_jerkk.rename(
             columns={"acc_x": "jerk_acc_x", "acc_y": "jerk_acc_y", "acc_z": "jerk_acc_z", "gyro_x": "jerk_gyro_x",
                      "gyro_y": "jerk_gyro_y", "gyro_z": "jerk_gyro_z", "azimuth": "jerk_azimuth", "pitch": "jerk_pitch",
