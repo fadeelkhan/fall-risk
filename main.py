@@ -46,10 +46,7 @@ for onePort in ports:
     portsList.append(str(onePort))
 
 val = 3
-
-for x in range(0, len(portsList)):
-    if portsList[x].startswith("COM" + str(val)):
-        portVar = "COM" + str(val)
+portVar = "COM" + str(val)
 
 serialInst.baudrate = 9600
 serialInst.port = portVar
@@ -69,7 +66,7 @@ def create_window():
     return sg.Window(
         'Physician Interface',
         layout,
-        size=(600, 600),
+        size=(1550, 850),
         no_titlebar=True,
         element_justification='center')
 
@@ -78,9 +75,10 @@ window = create_window()
 start_time = 0
 active = False
 lap_amount = 1
-
+n=0
 while True:
-    event, values = window.read(timeout=10)
+    n+=1
+    event, values = window.read(timeout=50)
     if event in (sg.WIN_CLOSED, '-CLOSE-'):
         break
 
@@ -102,18 +100,18 @@ while True:
                 window['-STARTSTOP-'].update('Stop')
 
     if active:
-        for iterr in range(3):
-            if serialInst.in_waiting:
-                packet = serialInst.readlines()
-                print(packet)
-                # if bool(re.search(r'\d', packet.decode('utf', errors='ignore').rstrip('\n'))):
-                #     input_file = packet.decode('utf', errors='ignore').rstrip('\n')
-                #     input_file = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', input_file))))
-                #     new_packet = serialInst.readline()
-                #     new_lst = packet.decode('utf', errors='ignore').rstrip('\n')
-                #     new_lst = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', new_lst))))
-                #     input_file = (input_file + new_lst) / 2
-                #     print(iterr)
+        if serialInst.in_waiting:
+            packet = serialInst.readline()
+            if bool(re.search(r'\d', packet.decode('utf', errors='ignore').rstrip('\n'))):
+                input_file = packet.decode('utf', errors='ignore').rstrip('\n')
+                input_file = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', input_file))))
+                for iterr in range(15):
+                    new_packet = serialInst.readline()
+                    new_lst = new_packet.decode('utf', errors='ignore').rstrip('\n')
+                    new_lst = np.array(list(map(float, re.findall('[-+]?[0-9]*\.?[0-9]+', new_lst))))
+                    input_file = input_file + new_lst
+                input_file = input_file / 15
+                # print('n=', n, 'iterr = ', iterr, 'and', input_file)
         try:
             ### Predict Real Time
             fall_vs_no_fall_predictions, types_of_activities_predictions = predictions.predict_using_existing_models(
@@ -121,8 +119,5 @@ while True:
             window['-TIME-'].update(types_of_activities_predictions[0])
         except:
             pass
-
-
-
 
 window.close()
