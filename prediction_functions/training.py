@@ -49,7 +49,8 @@ def train_new_models(master_dataset):
     binary_model = RandomForestClassifier(n_estimators=78, criterion="entropy", oob_score=True)
     binary_model.fit(Xbinary_train, ybinary_train)
 
-    multiclass_model = LogisticRegression()
+    # multiclass_model = LogisticRegression()
+    multiclass_model = RandomForestClassifier(n_estimators=78, criterion="entropy", oob_score=True)
     multiclass_model.fit(X_train, y_train)
 
     return binary_model, multiclass_model

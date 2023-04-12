@@ -7,15 +7,15 @@ def preprocess_mapping(data_file):
     df = pd.read_excel(data_file)
 
     # filter out rows where there is only an integer
-    df = df[df.apply(lambda x: x.str.isnumeric().all(), axis=1)]
+    # df = df[df.apply(lambda x: x.str.isnumeric().all(), axis=1)]
 
     df = df.iloc[:, :2]
     df.columns = ['x', 'y']
     return df
 
 def create_heatmap(df, mapped_location_file):
-    df['x1'] = df['x']+0.5
-    df['y1'] = df['y']-0.5
+    df['x1'] = df['x']+0.001
+    df['y1'] = df['y']-0.001
     q1 = df["x"].quantile(0.95)
     q2 = df["y"].quantile(0.95)
     df = df[df["x"] < q1]

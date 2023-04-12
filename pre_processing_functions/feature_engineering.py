@@ -6,13 +6,15 @@ import numpy as np
 def get_magnitude(a, b, c):
     return np.array([np.sqrt(a ** 2 + b ** 2 + c ** 2)])
 
-def process_list(lst):
+def process_list(ls):
     '''
     Returns processed list with 78 synthesized features from a list with 9 features
     :param lst: a list with 9 features (acceleration, gyroscope and orientation in x, y, z directions)
     :return: numpy array with 78 synthesized features
     '''
-    # Calculate Jerk
+    # # Calculate Jerk
+    lst = ls.copy()
+    lst = lst[0:9]
     # lst = np.array(list(map(float, lst.split(','))))
     max = lst.copy()
     min = lst.copy()
