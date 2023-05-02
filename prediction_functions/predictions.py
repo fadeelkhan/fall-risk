@@ -24,19 +24,26 @@ def predict_using_existing_models(data_file):
     #                  'F2': 'Falling Backward While Walking After Slipping', 'F3': 'Lateral Fall While Walking After Slipping', 'F4': 'Falling Forward While Walking After Tripping',
     #                  'F5': 'Falling While Walking, Using Hands to Dampen Fall', 'F6': 'Fall Forward When Trying To Get Up'}
 
-    multi_mapping = {'F': 'Fall Event', 'S': 'Standing', 'T': 'Standing/Walking', 'W': 'Standing/Walking'}
+    multi_mapping = {'F': 1, 'S': 0, 'T': 0, 'W': 0}
 
     multiclass_predictions = list(map(multi_mapping.get, multiclass_predictions))
     return binary_predictions, multiclass_predictions
 
 def predict(binary_model, multiclass_model, data_file):
-    # processed_df = get_processed_data(data_file)
-    processed_df = process_list(data_file)
-    binary_predictions = binary_model.predict(processed_df.reshape(1, -1))
-    multiclass_predictions = multiclass_model.predict(processed_df.reshape(1, -1))
+    processed_df = get_processed_data(data_file)
+    # processed_df = process_list(data_file)
+    # binary_predictions = binary_model.predict(processed_df.reshape(1, -1))
+    binary_predictions = binary_model.predict(processed_df)
+
+    # multiclass_predictions = multiclass_model.predict(processed_df.reshape(1, -1))
+    multiclass_predictions = multiclass_model.predict(processed_df)
 
     return binary_predictions, multiclass_predictions
 
 def get_times(data_file):
-    df = pd.read_csv(data_file)
-    return df['times']
+    # df = pd.read_csv(data_file)
+    return data_file['times']
+
+def tabulate_fall_coordinates(falls, locations):
+
+    return 1

@@ -14,8 +14,6 @@ def preprocess_mapping(data_file):
     return df
 
 def create_heatmap(df, mapped_location_file):
-    df['x1'] = df['x']+0.001
-    df['y1'] = df['y']-0.001
     q1 = df["x"].quantile(0.95)
     q2 = df["y"].quantile(0.95)
     df = df[df["x"] < q1]

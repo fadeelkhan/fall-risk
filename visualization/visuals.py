@@ -9,6 +9,7 @@ from matplotlib.figure import Figure
 from visualization.mapping import preprocess_mapping
 from visualization.mapping import create_heatmap
 import seaborn as sns
+import pandas as pd
 
 def GUI(times, fall_vs_no_fall_predictions, location_file, image_file):
     layout = [[sg.Button('Plot Falls'), sg.Button('Plot Location Mapping'), sg.Button('Show Tabular Fall Data'), sg.Button('Export Data'), sg.Cancel()],
@@ -39,7 +40,9 @@ def draw_plot(times, fall_vs_no_fall_predictions, window):
     fig_agg.draw()
 
 def location(location_file, image_file, window):
-    df = preprocess_mapping(location_file)
+    # df = preprocess_mapping(location_file)
+    # df = pd.read_excel(location_file)
+    df = location_file.copy()
     df, df2 = create_heatmap(df, image_file)
     di = {107: 'k', 114: 'r'}
     df2 = df2.replace({"color": di})
@@ -50,10 +53,10 @@ def location(location_file, image_file, window):
     ax = fig.add_subplot(111)
     ax.set_xlabel("Time")
     ax.set_ylabel("No Fall [0] vs Fall [1]")
-    fig, ax = plt.subplots(figsize=(6,6))
+    fig, ax = plt.subplots(figsize=(6, 6))
     ax.scatter(df2['x'], df2['y'], s=1, color=df2['color']) # plotting location
 
-    sns.kdeplot(data=df, x="x1", y="y1", fill=True, alpha=0.5) # plotting heatmap
+    sns.kdeplot(data=df, x="x", y="y", fill=True, alpha=0.5, thresh=0.55, color='orange') # plotting heatmap
 
     fig_agg = draw_figure(canvas, fig)
     fig_agg.draw()

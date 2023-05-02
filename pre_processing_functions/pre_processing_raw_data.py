@@ -3,6 +3,22 @@ import os
 import glob
 import numpy as np
 from pathlib import Path
+import regex as re
+
+def get_files(lines):
+    df = pd.DataFrame([sub.split(",") for sub in lines])
+    df = df.rename(
+        columns={0: 'acc_x', 1: 'acc_y', 2: 'acc_z', 3: 'gyro_x', 4: 'gyro_y', 5: 'gyro_z', 6: 'azimuth', 7: 'pitch',
+                 8: 'roll', 10: "x", 11: "y"})
+    df['x'] = df.x.str.extract('(\d+)')
+    df['y'] = df.y.str.extract('(\d+)')
+    df2 = df[['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z', 'azimuth', 'pitch', 'roll', 'x', 'y']].copy()
+    df2 = df2.dropna()
+    input_file = df2.iloc[:, 0:9]
+    input_file = input_file.astype(float)
+    location_file = df2.iloc[:, 9:11]
+
+    return input_file, location_file
 
 def create_master_dataframe(location):
     # use glob to get all the csv files

@@ -13,6 +13,7 @@ def process_list(ls):
     :return: numpy array with 78 synthesized features
     '''
     # # Calculate Jerk
+
     lst = ls.copy()
     lst = lst[0:9]
     # lst = np.array(list(map(float, lst.split(','))))
@@ -42,8 +43,11 @@ def get_processed_data(file):
     :param file:  csv file with 10 columns (9 accelerometer data inputs, and 1 for times)
     :return: processed data frame with 78 synthesized features
     """
-    df = pd.read_csv(file)
-    df = pd.DataFrame(file, columns=['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z', 'azimuth', 'pitch', 'roll'])
+    try:
+        df = pd.read_csv(file)
+        # df = pd.DataFrame(file, columns=['acc_x', 'acc_y', 'acc_z', 'gyro_x', 'gyro_y', 'gyro_z', 'azimuth', 'pitch', 'roll'])
+    except:
+        df = file.copy()
     df = df.dropna(axis=0)
     df = df.loc[~(df == 0).all(axis=1)]
     times = df['times']
