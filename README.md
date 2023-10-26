@@ -41,7 +41,7 @@ pip install -r config/requirements.txt
 ```
 
 ## Contributors
-**Khan, Fadeel Sher* [Machine Learning]* <br />
+**Khan, Fadeel Sher* [Machine Learning & Software]* <br />
 **Garlepp, Vanessa* [Electrical Components]* <br />
 **Gorton, Charlie* [Electrical and Mechanical Components]* <br />
 **Heuser, Chris* [Mechanical Components]* <br />
