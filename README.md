@@ -6,16 +6,12 @@
 2. [Prerequisites](#prerequisites)
 3. [Folder Structure](#folder-structure)
 4. [Installation and Usage Instructions](#installation-and-usage-instructions)
-5. [Training Data Description](#training-data-description)
-6. [Preprocessing](#preprocessing)
-7. [Predictions](#predictions)
-8. [Visualizations](#visualizations)
-9. [Contributors](#contributors)
-10. [Acknowledgements](#acknowledgements)
+5. [Contributors](#contributors)
+6. [Acknowledgements](#acknowledgements)
 
 
 ## About the Project
-Our main goal is....
+Software for Fall Risk data acquisition device.
 
 ## Prerequisites
 This project installs and uses the following packages.
@@ -37,31 +33,19 @@ This project installs and uses the following packages.
 ## Installation and Usage Instructions
 1. Clone the repository
 ```
-git clone https://github.com/fadeelkhan/fall-risk.git~~~~
+git clone https://github.com/fadeelkhan/fall-risk.git
 ```
 2. Install dependencies
 ```
 pip install -r config/requirements.txt
 ```
 
-## Training Data Description
-Our data...
-
-## Preprocessing
-Our preprocessing...
-
-## Predictions
-Our predictions...
-
-## Visualizations
-Our visualizations....
-
 ## Contributors
-**Khan, Fadeel Sher** <br />
-**Garlepp, Vanessa** <br />
-**Gorton, Charlie** <br />
-**Heuser, Chris** <br />
-**Lettenberger, Ahalya** <br /> 
+**Khan, Fadeel Sher* [Machine Learning]* <br />
+**Garlepp, Vanessa* [Electrical Components]* <br />
+**Gorton, Charlie* [Electrical and Mechanical Components]* <br />
+**Heuser, Chris* [Mechanical Components]* <br />
+**Lettenberger, Ahalya*[Electrical Components]* <br /> 
 
 ## Acknowledgements
 ### Faculty and Design Mentors
